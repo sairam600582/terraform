@@ -1,7 +1,29 @@
-echo "this is sairam"
-echo "this is oly for me"
-echo "caution alert"
-echo "this is added for git web-hook testing"
-echo "this is another with large one"
-echo "this is again cals"
-echo "practical"
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+            checkout scm
+            }
+        }
+        
+        stage ("terraform init") {
+            steps {
+                sh ('terraform init -reconfigure') 
+            }
+        }
+        stage ("terraform plan") {
+            steps {
+                sh ('terraform plan') 
+            }
+        }
+                
+        stage ("terraform Action") {
+            steps {
+                echo "Terraform action is --> ${action}"
+                sh ('terraform ${action} --auto-approve') 
+           }
+        }
+    }
+}
